@@ -32,7 +32,6 @@
               <div class="card-body">
                 <ul class="list-group">
                   <li class="list-group-item" v-for="sufis in sufixes" v-bind:key="sufis">{{sufis}}</li>
-                  
                 </ul>
                 <br />
                 <input class="form-control" type="text" placeholder="Digiteo sufixo" />
