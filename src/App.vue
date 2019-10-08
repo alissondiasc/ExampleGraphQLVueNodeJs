@@ -15,11 +15,28 @@
             <div class="card">
               <div class="card-body">
                 <ul class="list-group">
-                  <li class="list-group-item" v-for="prefix in prefixes" v-bind:key="prefix">{{prefix}}</li>
-                  
+                  <li
+                    class="list-group-item"
+                    v-for="prefix in prefixes"
+                    v-bind:key="prefix"
+                  >
+                  <div class="row">
+                        <div class="col-md">
+                          {{prefix}}
+                        </div>
+                        <div class="col-md text-right">
+                          <button class="btn btn-info" v-on:click="deletePrefix(prefix)"><span class="fa fa-trash"></span></button>
+                        </div>
+                      </div>
+                  </li>
                 </ul>
                 <br />
-                <input class="form-control" type="text" placeholder="Digiteo sufixo" />
+                <div class="input-group">
+                  <input class="form-control" type="text" placeholder="Digite o prefixo" v-model="prefix" v-on:keyup.enter="addPrefix(prefix)">
+                  <div class="input-group-append">
+                    <button class="btn btn-info" v-on:click="addPrefix(prefix)"><span class="fa fa-plus"></span></button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -31,19 +48,43 @@
             <div class="card">
               <div class="card-body">
                 <ul class="list-group">
-                  <li class="list-group-item" v-for="sufis in sufixes" v-bind:key="sufis">{{sufis}}</li>
+                  <li class="list-group-item" v-for="sufis in sufixes" v-bind:key="sufis">
+                      <div class="row">
+                        <div class="col-md">
+                          {{sufis}}
+                        </div>
+                        <div class="col-md text-right">
+                          <button class="btn btn-info" v-on:click="deleteSufix(prefix)"><span class="fa fa-trash"></span></button>
+                        </div>
+                      </div>
+                    </li>
                 </ul>
                 <br />
-                <input class="form-control" type="text" placeholder="Digiteo sufixo" />
+                <div class="input-group">
+                  <input class="form-control" type="text" placeholder="Digite o sufixo" v-model="sufix" v-on:keyup.enter="addSufix(sufix)">
+                  <div class="input-group-append">
+                    <button class="btn btn-info" v-on:click="addSufix(sufix)"><span class="fa fa-plus"></span></button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-        <h5>Domínios <span class="badge badge-info">{{domains.length}}</span></h5>
-        <div class=" card">
+        <h5>
+          Domínios
+          <span class="badge badge-info">{{domains.length}}</span>
+        </h5>
+        <div class="card">
           <div class="card-body">
             <ul class="list-group">
-              <li class="list-group-item" v-for="domain in domains" v-bind:key="domain.name">{{domain}}</li>
+              <li
+                class="list-group-item"
+                v-for="domain in domains"
+                v-bind:key="domain.name"
+              >
+              {{domain}}
+              
+              </li>
             </ul>
           </div>
         </div>
@@ -56,14 +97,45 @@
 import "bootstrap/dist/css/bootstrap.css";
 import "font-awesome/css/font-awesome.css";
 export default {
-  name: "app",
-  data: () => {
-    return {
-      prefixes: ['Air','Jet','Fligth'],
-      sufixes: ['Hub', 'Station','Mart'],
-      domains:['Air','Jet','Fligth','Hub', 'Station','Mart']
-    };
-  }
+	name: "app",
+	data: () => {
+		return {
+			prefix:"",
+			sufix:"",
+			prefixes: ["Air", "Jet", "Fligth"],
+			sufixes: ["Hub", "Station", "Mart"],
+			domains: ["Air", "Jet", "Fligth", "Hub", "Station", "Mart"]
+		};
+	},
+	methods:{
+		addPrefix(prefix){
+			this.prefixes.push(prefix);
+			this.prefix = "";
+			this.generate();
+		},
+		addSufix(sufix){
+			this.sufixes.push(sufix);
+			this.sufix = "";
+			this.generate();
+		},
+		deletePrefix(prefix){
+			this.prefixes.splice(this.prefixes.indexOf(prefix),1);
+			this.generate();
+		},
+		deleteSufix(sufix){
+			this.sufixes.splice(this.sufixes.indexOf(sufix),1);
+			this.generate();
+		},
+		generate(){
+			this.domains = [];
+			for (const prefix of this.prefixes) {
+				for (const sufix of this.sufixes) {
+					this.domains.push(prefix + sufix);
+				}
+			}
+
+		}
+	}
 };
 </script>
 
